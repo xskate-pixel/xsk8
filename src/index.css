@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&family=Anton&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --font-display: "Anton", sans-serif;
+  
+  --color-x-red: #E63946;
+  --color-x-metal: #2B2D42;
+  --color-x-silver: #8D99AE;
+  --color-x-light: #EDF2F4;
+}
+
+@layer base {
+  body {
+    @apply bg-[#0f1115] text-x-light font-sans;
+  }
+}
+
+@utility metal-gradient {
+  background: linear-gradient(145deg, #2b2d42, #1a1c2c);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.x-card {
+  @apply metal-gradient rounded-xl overflow-hidden shadow-xl;
+}
+
+.x-button {
+  @apply px-4 py-2 bg-x-red hover:bg-red-700 text-white font-bold rounded transition-all active:scale-95 uppercase tracking-wider;
+}
+
+.x-badge {
+  @apply px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-tighter;
+}
+
