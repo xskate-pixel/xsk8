@@ -299,13 +299,74 @@ export default function App() {
                     </div>
                   </div>
 
-                  <div className="space-y-4">
-                    <h3 className="text-xl font-display uppercase flex items-center gap-2">
-                      <TrendingUp size={20} className="text-x-red" />
-                      Histórico Recente
-                    </h3>
-                    <div className="x-card p-6 min-h-[300px] flex flex-col items-center justify-center text-center text-x-silver">
-                      <p className="text-sm italic">Acompanhamento de evolução e notas de treino aparecerão aqui.</p>
+                  <div className="space-y-8">
+                    <div className="space-y-4">
+                      <h3 className="text-xl font-display uppercase flex items-center gap-2">
+                        <TrendingUp size={20} className="text-x-red" />
+                        Conquistas Recentes
+                      </h3>
+                      <div className="x-card divide-y divide-white/5">
+                        {selectedStudent.tricks
+                          .filter(t => t.dateLearned)
+                          .sort((a, b) => new Date(b.dateLearned!).getTime() - new Date(a.dateLearned!).getTime())
+                          .slice(0, 3)
+                          .map(st => {
+                            const trick = TRICKS.find(t => t.id === st.trickId);
+                            if (!trick) return null;
+                            return (
+                              <div key={st.trickId} className="p-4 flex items-center justify-between">
+                                <div>
+                                  <p className="font-bold text-sm">{trick.name}</p>
+                                  <p className="text-[10px] text-x-silver uppercase">
+                                    {new Date(st.dateLearned!).toLocaleDateString('pt-BR')}
+                                  </p>
+                                </div>
+                                <span className="text-[10px] font-bold text-green-400 uppercase bg-green-400/10 px-2 py-0.5 rounded">
+                                  Aprendida
+                                </span>
+                              </div>
+                            );
+                          })}
+                        {selectedStudent.tricks.filter(t => t.dateLearned).length === 0 && (
+                          <div className="p-8 text-center text-x-silver italic text-sm">
+                            Nenhuma manobra aprendida recentemente.
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="space-y-4">
+                      <h3 className="text-xl font-display uppercase flex items-center gap-2">
+                        <Trophy size={20} className="text-yellow-400" />
+                        Personal Bests
+                      </h3>
+                      <div className="x-card divide-y divide-white/5">
+                        {selectedStudent.tricks
+                          .filter(t => t.status === 'mastered')
+                          .map(st => ({ st, trick: TRICKS.find(t => t.id === st.trickId)! }))
+                          .sort((a, b) => b.trick.difficulty - a.trick.difficulty)
+                          .slice(0, 3)
+                          .map(({ st, trick }) => (
+                            <div key={st.trickId} className="p-4 flex items-center justify-between">
+                              <div>
+                                <p className="font-bold text-sm">{trick.name}</p>
+                                <div className="flex gap-0.5 mt-1">
+                                  {[...Array(5)].map((_, i) => (
+                                    <div key={i} className={`w-1 h-1 rounded-full ${i < Math.ceil(trick.difficulty/2) ? 'bg-yellow-400' : 'bg-white/10'}`} />
+                                  ))}
+                                </div>
+                              </div>
+                              <span className="text-[10px] font-bold text-yellow-400 uppercase bg-yellow-400/10 px-2 py-0.5 rounded">
+                                Dificuldade {trick.difficulty}
+                              </span>
+                            </div>
+                          ))}
+                        {selectedStudent.tricks.filter(t => t.status === 'mastered').length === 0 && (
+                          <div className="p-8 text-center text-x-silver italic text-sm">
+                            Nenhuma manobra masterizada ainda.
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
